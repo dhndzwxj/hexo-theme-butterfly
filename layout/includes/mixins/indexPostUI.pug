@@ -2,6 +2,7 @@ mixin indexPostUI()
   - const indexLayout = theme.index_layout
   - const masonryLayoutClass = (indexLayout === 6 || indexLayout === 7) ? 'masonry' : ''
   #recent-posts.recent-posts.nc(class=masonryLayoutClass)
+    include ../pagination.pug
     .recent-post-items
       each article, index in page.posts.data
         .recent-post-item
@@ -24,6 +25,11 @@ mixin indexPostUI()
                 i.fas.fa-thumbtack.sticky
               = title
             .article-meta-wrap
+              if theme.post_meta.page.author
+                span.post-meta-author
+                  i.fa-solid.fa-user
+                  span.post-meta-author=article.author
+                  span.article-meta-separator |
               if theme.post_meta.page.date_type
                 span.post-meta-date
                   if theme.post_meta.page.date_type === 'both'
@@ -105,9 +111,21 @@ mixin indexPostUI()
                           i.fa-solid.fa-spinner.fa-spin
 
             //- Display the article introduction on homepage
-            - const content = postDesc(article)
-            if content
-              .content!=content
+            case theme.index_post_content.method
+              when false
+                - break
+              when 1
+                .content!= article.description
+              when 2
+                .content!= article.description || truncate(article.content, theme.index_post_content.length)
+              default
+                //- [带密码的标签]<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="抱歉，这个密码看着不太对，请再试试。" data-whm="抱歉，这个文章不能被纠正，不过您还是能看看解密后的内容。">
+                div(style={overflow:'auto'}).content!= strip_html(article.content)
+                //- div(style={overflow:'auto'}).content!= article.content.replace(/<[^>]+>/ig,'') //-使用正则表达式，作用和strip_html()函数一样
+                //- div(style={overflow:'auto'}).content!= truncate(article.content,1000)
+                //- div(style={overflow:'auto'}).content!= truncate(article.content, strip_html(article.content).length)
+                //- .content!= truncate(article.content, theme.index_post_content.length)
+
 
         if theme.ad && theme.ad.index
           if (index + 1) % 3 === 0

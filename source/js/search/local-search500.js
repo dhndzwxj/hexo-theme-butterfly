@@ -103,61 +103,14 @@ class LocalSearch {
 
   getResultItems (keywords) {
     const resultItems = []
-    let l_keywords = keywords[0].split('').length //- 获取搜索关键词的长度
-    //- 将#标签搜索的判断放在循环之外！！！
-    let tagSearch = 0 //-判断是否为标签搜索
-    if(keywords[0][0] === '#' && l_keywords > 1 && keywords[0][1] !== '#'){
-      tagSearch = 1
-      keywords[0] = keywords[0].substring(1)
-    }
-    //- 将@标题搜索的判断放在循环之外！！！
-    let titleSearch = 0 //-判断是否为标题搜索
-    if(keywords[0][0] === '@' && l_keywords > 1 && keywords[0][1] !== '@'){
-      titleSearch = 1
-      keywords[0] = keywords[0].substring(1)
-    }
-    //- 从下面一行开始，是文章遍历
-    this.datas.forEach(({ title, content, tags, series, url }) => {  
+    this.datas.forEach(({ title, content, url }) => {
       // The number of different keywords included in the article.
       const [indexOfTitle, keysOfTitle] = this.getIndexByWord(keywords, title)
       const [indexOfContent, keysOfContent] = this.getIndexByWord(keywords, content)
-////////////////////////////////////////////////////////////////////////////////////////
-//---------------------定义了tags-------------------------------------------------------
-      let tags0 = ''
-      let space = 1
-      //-以双分号；；分割一篇文章内的标签
-      for(let i=0;i<tags.length;i++){
-        if(/\S/.test(tags[i])){
-          space = 0
-          tags0 += tags[i]
-        }else{
-          if(space === 0){
-            tags0 += '；；'
-            space = 1
-          }
-        }
-      }
- //---------------------定义了seiries-------------------------------------------------------     
-      let series0 = ''
-      for(let i=0;i<series.length;i++){
-        series0 += series[i]
-      }
+      const includedCount = new Set([...keysOfTitle, ...keysOfContent]).size
 
-      //增加Tags片断
-      const [indexOfTags0, keysOfTags0] = this.getIndexByWord(keywords,tags0)
-      const includedCount = new Set([...keysOfTitle, ...keysOfContent, ...keysOfTags0]).size
-//--------------------------------------------------------------------------------------
-////////////////////////////////////////////////////////////////////////////////////////
       // Show search results
-      let hitCount = 0
-      if(tagSearch){
-        hitCount =  indexOfTags0.length
-      }else if(titleSearch){
-        hitCount =  indexOfTitle.length
-      }else{
-        hitCount = indexOfTitle.length + indexOfContent.length + indexOfTags0.length
-      }
-      // const hitCount = indexOfTitle.length + indexOfContent.length + indexOfTags0.length
+      const hitCount = indexOfTitle.length + indexOfContent.length
       if (hitCount === 0) return
 
       const slicesOfTitle = []
@@ -196,70 +149,17 @@ class LocalSearch {
       url = new URL(url, location.origin)
       url.searchParams.append('highlight', keywords.join(' '))
 
-      //----------------------给标题的关键字强调------------------------------
       if (slicesOfTitle.length !== 0) {
-        resultItem += `<div class="local-search-hit-item"><a href="${url.href}" target="_blank"><span class="search-result-title">${this.highlightKeyword(title, slicesOfTitle[0])}</span></a>`
+        resultItem += `<div class="local-search-hit-item"><a href="${url.href}"><span class="search-result-title">${this.highlightKeyword(title, slicesOfTitle[0])}</span>`
       } else {
-        resultItem += `<div class="local-search-hit-item"><a href="${url.href}" target="_blank"><span class="search-result-title">${title}</span></a>`
-      }
-      // slicesOfContent.forEach(slice => {
-      //   resultItem += `<p class="search-result">${this.highlightKeyword(content, slice)}...</p></a>`
-      // })
-
-      //----------------------给正文片断的关键字强调------------------------------
-      if(slicesOfContent.length !== 0){
-        slicesOfContent.forEach(slice => {
-          resultItem += `<p class="search-result">${this.highlightKeyword(content, slice)}...<br>`
-        })
-      } else{
-        resultItem += `<p class="search-result">${content.substring(0,Math.min(120,content.length))}...<br>`
+        resultItem += `<div class="local-search-hit-item"><a href="${url.href}"><span class="search-result-title">${title}</span>`
       }
 
-      //----------------------给tags的关键字强调------------------------------
-      let slicesOfTags0 = []
-      //将新生成的（带标签标志的）splitTags生成一个slice
-      while(indexOfTags0.length !== 0){
-        slicesOfTags0.push(this.mergeIntoSlice(0,tags0.length,indexOfTags0))
-      }
-      //将新的slice中的关键字强调
-      if(slicesOfTags0.length !== 0){
-        slicesOfTags0.forEach(slice => {
-          resultItem += `${this.highlightKeyword(tags0, slice)}</p>`
-        })
-      } else{
-        resultItem += `${tags0}</p>`
-      }
+      slicesOfContent.forEach(slice => {
+        resultItem += `<p class="search-result">${this.highlightKeyword(content, slice)}...</p></a>`
+      })
 
-      let index = resultItem.indexOf("...<br>")
-      //以"...</br>"为界，把要展示的结果一分为二；
-      let resultItem1 = resultItem.substring(0, index+7)
-      let resultItem2 = resultItem.substring(index+7,resultItem.length)
-      //下面只改resultItem2，给tags前面加上标签符号
-
-      // // 去掉标签后面的分号；；，再在每个标签前面加一个图标
-      let indexTermin = resultItem2.indexOf("</p>") //终止位置
-      let resultItem21 = ""
-      if(indexTermin){
-        space = 1
-        resultItem21 = resultItem21.concat(`<i class="fas fa-tag"><span style="font-family:times,kaiti">`)
-        for(let i=0;i<indexTermin;i++){
-          if(resultItem2[i] !== '；'){
-            space = 0
-            resultItem21 = resultItem21.concat(resultItem2[i])         
-          }else{
-            if(space === 0)
-            resultItem21 += '</span></i>&nbsp &nbsp<i class="fas fa-tag"><span style="font-family:times,kaiti">'
-            space = 1          
-          }
-        }
-        resultItem21 += '</span></i>'
-      }else{
-        resultItem21 = resultItem2
-      }
-
-      let resultItem3 = "" //- series.length //在搜索结果中输出文章序列（series），但hexo-generator-search插件不支持
-      resultItem = resultItem1 + resultItem21 + resultItem3 + `</div>`   
-
+      resultItem += '</div>'
       resultItems.push({
         item: resultItem,
         id: resultItems.length,
@@ -280,10 +180,8 @@ class LocalSearch {
         this.datas = isXml
           ? [...new DOMParser().parseFromString(res, 'text/xml').querySelectorAll('entry')].map(element => ({
               title: element.querySelector('title').textContent,
-              content: element.querySelector('content') && element.querySelector('content').textContent,
-              url: element.querySelector('url').textContent,
-              tags: element.querySelector('tags') && element.querySelector('tags').textContent,
-              series: element.querySelector('series') && element.querySelector('series').textContent
+              content: element.querySelector('content').textContent,
+              url: element.querySelector('url').textContent
             }))
           : JSON.parse(res)
         // Only match articles with non-empty titles
@@ -291,8 +189,6 @@ class LocalSearch {
           data.title = data.title.trim()
           data.content = data.content ? data.content.trim().replace(/<[^>]+>/g, '') : ''
           data.url = decodeURIComponent(data.url).replace(/\/{2,}/g, '/')
-          data.tags = data.tags ? data.tags.trim().replace(/<[^>]+>/g, '') : ''
-          data.series = data.series ? data.series.trim().replace(/<[^>]+>/g, '') : ''
           return data
         })
         // Remove loading animation
@@ -350,10 +246,12 @@ window.addEventListener('load', () => {
   const input = document.querySelector('#local-search-input input')
   const statsItem = document.getElementById('local-search-stats-wrap')
   const $loadingStatus = document.getElementById('loading-status')
+  const isXml = !path.endsWith('json')
 
   const inputEventFunction = () => {
     if (!localSearch.isfetched) return
-    const searchText = input.value.trim().toLowerCase()
+    let searchText = input.value.trim().toLowerCase()
+    isXml && (searchText = searchText.replace(/</g, '&lt;').replace(/>/g, '&gt;'))
     if (searchText !== '') $loadingStatus.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>'
     const keywords = searchText.split(/[-\s]+/)
     const container = document.getElementById('local-search-results')
@@ -363,11 +261,14 @@ window.addEventListener('load', () => {
       resultItems = localSearch.getResultItems(keywords)
     }
     if (keywords.length === 1 && keywords[0] === '') {
-      container.classList.add('no-result')
       container.textContent = ''
+      statsItem.textContent = ''
     } else if (resultItems.length === 0) {
       container.textContent = ''
-      statsItem.innerHTML = `<div class="search-result-stats">${languages.hits_empty.replace(/\$\{query}/, searchText)}</div>`
+      const statsDiv = document.createElement('div')
+      statsDiv.className = 'search-result-stats'
+      statsDiv.textContent = languages.hits_empty.replace(/\$\{query}/, searchText)
+      statsItem.innerHTML = statsDiv.outerHTML
     } else {
       resultItems.sort((left, right) => {
         if (left.includedCount !== right.includedCount) {
@@ -380,7 +281,6 @@ window.addEventListener('load', () => {
 
       const stats = languages.hits_stats.replace(/\$\{hits}/, resultItems.length)
 
-      container.classList.remove('no-result')
       container.innerHTML = `<div class="search-result-list">${resultItems.map(result => result.item).join('')}</div>`
       statsItem.innerHTML = `<hr><div class="search-result-stats">${stats}</div>`
       window.pjax && window.pjax.refresh(container)
@@ -401,9 +301,7 @@ window.addEventListener('load', () => {
   }
 
   const openSearch = () => {
-    const bodyStyle = document.body.style
-    bodyStyle.width = '100%'
-    bodyStyle.overflow = 'hidden'
+    btf.overflowPaddingR.add()
     btf.animateIn($searchMask, 'to_show 0.5s')
     btf.animateIn($searchDialog, 'titleScale 0.5s')
     setTimeout(() => { input.focus() }, 300)
@@ -425,16 +323,14 @@ window.addEventListener('load', () => {
   }
 
   const closeSearch = () => {
-    const bodyStyle = document.body.style
-    bodyStyle.width = ''
-    bodyStyle.overflow = ''
+    btf.overflowPaddingR.remove()
     btf.animateOut($searchDialog, 'search_close .5s')
     btf.animateOut($searchMask, 'to_hide 0.5s')
     window.removeEventListener('resize', fixSafariHeight)
   }
 
   const searchClickFn = () => {
-    document.querySelector('#search-button > .search').addEventListener('click', openSearch)
+    btf.addEventListenerPjax(document.querySelector('#search-button > .search'), 'click', openSearch)
   }
 
   const searchFnOnce = () => {

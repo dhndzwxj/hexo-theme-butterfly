@@ -10,7 +10,6 @@
   .shuoshuo-item-header
     display: flex
     align-items: center
-    cursor: default
 
   .shuoshuo-avatar
     overflow: hidden
@@ -37,42 +36,18 @@
     & > *:last-child
       margin-bottom: 0
 
-  .shuoshuo-footer
-    display: flex
-    align-items: center
+  .shuoshuo-tag
+    display: inline-block
+    margin-right: 8px
+    padding: 0 8px
+    width: fit-content
+    border: 1px solid $light-blue
+    border-radius: 12px
+    color: $light-blue
+    font-size: .85em
+    cursor: default
+    transition: all .2s ease-in-out
 
-    &.flex-between
-      justify-content: space-between
-
-    &.flex-end
-      justify-content: flex-end
-
-    .shuoshuo-tag
-      display: inline-block
-      margin-right: 8px
-      padding: 0 8px
-      width: fit-content
-      border: 1px solid $light-blue
-      border-radius: 12px
-      color: $light-blue
-      font-size: .85em
-      cursor: default
-      transition: all .2s ease-in-out
-
-      &:hover
-        background: $light-blue
-        color: var(--white)
-
-    .shuoshuo-comment-btn
-      padding: 2px
-      color: #90a4ae
-      cursor: pointer
-
-      &:hover
-        color: $light-blue
-
-  .shuoshuo-comment
-    padding-top: 10px
-
-    &.no-comment
-      display: none
+    &:hover
+      background: $light-blue
+      color: var(--white)

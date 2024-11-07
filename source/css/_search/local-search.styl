@@ -19,16 +19,30 @@
       display: none
 
     .local-search-hit-item
-      margin-left: 24px
-      padding-left: 3px
-      line-height: 1.8
+      position: relative
+      padding-left: 24px
+      line-height: 1.7
 
-      &::marker
-        color: $search-color
-        font-weight: bold
-        font-style: italic
+      &:hover
+        &:before
+          border-color: var(--pseudo-hover)
+
+      &:before
+        $w = .5em
+        position: absolute
+        top: .45em
+        left: 0
+        width: w = $w
+        height: h = w
+        border: 3px solid $search-color
+        border-radius: w
+        background: transparent
+        content: ''
+        line-height: h
+        transition: all .2s ease-in-out
 
       a
+        display: block
         color: var(--search-a-color)
 
         &:hover
@@ -39,19 +53,17 @@
 
       .search-result
         margin: 0 0 8px
-        word-break: break-all
-        font-size: .9em
 
     .search-result-list
       overflow-y: overlay
       margin: 0 -20px
       padding: 0 22px
-      max-height: calc(80vh - 180px)
+      max-height: calc(80vh - 200px)
 
       +maxWidth768()
-        max-height: calc(var(--search-height) - 190px) !important
+        max-height: calc(var(--search-height) - 220px) !important
 
 .search-keyword
   background: transparent
   color: $search-keyword-highlight
-  font-weight: 600
+  font-weight: bold

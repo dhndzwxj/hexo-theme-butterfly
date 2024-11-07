@@ -5,8 +5,13 @@ $indexEnable = hexo-config('cover.index_enable')
   .recent-post-item
     @extend .cardHover
     position: relative
-    overflow: hidden
+    overflow: auto
     margin-bottom: 20px
+    margin-top: 20px
+    display: flex
+    flex-direction: row
+    align-items: center
+    height: 30px   //- 主页文章简介框高度
 
     if $indexLayout == 6 || ($indexLayout == 7)
       display: inline-block
@@ -136,6 +141,7 @@ $indexEnable = hexo-config('cover.index_enable')
         margin: 6px 0
         color: var(--card-meta)
         font-size: .9em
+        font-family: kaiti
 
         & > .post-meta-date
           cursor: default
@@ -172,3 +178,4 @@ $indexEnable = hexo-config('cover.index_enable')
       & > .content
         @extend .limit-more-line
         -webkit-line-clamp: 2
+        height:7em  //-content框高度

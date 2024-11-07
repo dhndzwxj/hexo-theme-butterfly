@@ -2,9 +2,9 @@ if theme.menu
   #sidebar
     #menu-mask
     #sidebar-menus
-      .avatar-img.text-center
+      .avatar-img.is-center
         img(src=url_for(theme.avatar.img) onerror=`onerror=null;src='${theme.error_img.flink}'` alt="avatar")
-      .site-data.text-center
+      .site-data.is-center
         a(href=url_for(config.archive_dir) + '/')
           .headline= _p('aside.articles')
           .length-num= site.posts.length

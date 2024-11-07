@@ -19,9 +19,14 @@ hexo.extend.helper.register('aside_categories', function (categories, options = 
   const expandClass = isExpand && options.expand === true ? 'expand' : ''
   const buttonLabel = this._p('aside.more_button')
 
+  const pinyin = require('pinyin')
+  // function pinyinSort(a,b){
+  //   return pinyin(a) > pinyin(b) ? 1 : -1
+  //   // return a.pinyin.localeCompare(b.pinyin)
+  // }
   const prepareQuery = parent => {
     const query = parent ? { parent } : { parent: { $exists: false } }
-    return categories.find(query).sort(orderby, order).filter(cat => cat.length)
+    return categories.find(query).sort(pinyin.compare, order).filter(cat => cat.length)
   }
 
   const hierarchicalList = (remaining, level = 0, parent) => {

@@ -21,6 +21,17 @@ menu:
   # List||fas fa-list:
   #   Music: /music/ || fas fa-music
   #   Movie: /movies/ || fas fa-video
+    主页: ../../ || fas fa-home
+    关于: /about/ || fas fa-heart
+    娱乐||fas fa-hand-peace:
+      书籍: /books/ || fas fa-book
+      电影: /movies/ || fas fa-film #This is your movies page
+      游戏: /games/ || fas fa-gamepad #This is your games page
+      歌曲: /songs/ || fas fa-music #This is your songs page
+    结构||fas fa-laptop-house:
+      目录: /categories/ || fas fa-folder-open
+      归档: /archives/ || fas fa-archive
+      标签: /tags/ || fas fa-tags
 
 # --------------------------------------
 # Code Blocks Settings
@@ -29,7 +40,7 @@ menu:
 code_blocks:
   # Code block theme: darker / pale night / light / ocean / false
   theme: light
-  macStyle: false
+  macStyle: true
   # Code block height limit (unit: px)
   height_limit: false
   word_wrap: false
@@ -52,20 +63,20 @@ social:
 # Image Settings
 # --------------------------------------
 
-favicon: /img/favicon.png
+favicon: /private_img/favicon.png #/img/butterfly-icon.png #/img/favicon.png
 
 avatar:
-  img: /img/butterfly-icon.png
+  img: /private_img/yuyingnan.jpg #/img/butterfly-icon.png
   effect: false
 
 # Disable all banner images
 disable_top_img: false
 
 # If the banner of page not setting, it will show the default_top_img
-default_top_img:
+default_top_img: /private_img/bg1.png
 
 # The banner image of index page
-index_img:
+index_img:  /private_img/bg0.png
 
 # The banner image of archive page
 archive_img:
@@ -87,24 +98,24 @@ category_img:
 category_per_img:
 
 # The background image of footer
-footer_img: false
+footer_img: true
 
 # Website Background
 # Can set it to color or image url
 background:
 
 cover:
-  # Disable the cover or not
-  index_enable: true
-  aside_enable: true
-  archives_enable: true
+  # Disable the cover or not(是否现实文章封面)
+  index_enable: false
+  aside_enable: false
+  archives_enable: false
   # When cover is not set, the default cover is displayed
   default_cover:
     # - xxx.jpg
 
 # Replace Broken Images
 error_img:
-  flink: /img/friend_404.gif
+  flink: /img/yuyingnan.jpg
   post_page: /img/404.jpg
 
 # A simple 404 page
@@ -116,16 +127,18 @@ error_404:
 post_meta:
   # Home Page
   page:
+    author: true
     # Choose: created / updated / both
-    date_type: created
+    date_type: both
     # Choose: date / relative
     date_format: date
     categories: true
-    tags: false
+    tags: true
     label: true
   post:
+    author: true
     # Choose: left / center
-    position: left
+    position: center
     # Choose: created / updated / both
     date_type: both
     # Choose: date / relative
@@ -147,7 +160,7 @@ index_top_img_height:
 
 # The subtitle on homepage
 subtitle:
-  enable: false
+  enable: true
   # Typewriter Effect
   effect: true
   # Customize typed.js
@@ -163,6 +176,8 @@ subtitle:
   source: false
   # If you close the typewriter effect, the subtitle will only show the first line of sub
   sub:
+    - 随手写一写，揭晓这世界。
+    - 不觉初秋夜看长，才别盛夏日渐凉。食得应季佳肴芳，月满香桂是故乡。
 
 # Article layout on the homepage
 # 1: Cover on the left, info on the right
@@ -191,14 +206,14 @@ index_post_content:
 toc:
   post: true
   page: false
-  number: true
-  expand: false
+  number: false #自动编号
+  expand: true
   # Only for post
   style_simple: false
   scroll_percent: true
 
 post_copyright:
-  enable: true
+  enable: false
   decode: false
   author_href:
   license: CC BY-NC-SA 4.0
@@ -206,7 +221,7 @@ post_copyright:
 
 # Sponsor/reward
 reward:
-  enable: false
+  enable: true
   text:
   QR_code:
     # - img: /img/wechat.jpg
@@ -215,6 +230,12 @@ reward:
     # - img: /img/alipay.jpg
     #   link:
     #   text: alipay
+    - img: /private_img/wechat.png
+      link:
+      text: 微信
+    - img: /private_img/alipay.jpg
+      link:
+      text: 支付宝
 
 # Post edit
 # Easily browse and edit blog source code online.
@@ -240,15 +261,15 @@ post_pagination: 1
 
 # Displays outdated notice for a post
 noticeOutdate:
-  enable: false
+  enable: true
   # Style: simple / flat
   style: flat
   # When will it be shown
-  limit_day: 365
+  limit_day: 90
   # Position: top / bottom
   position: top
-  message_prev: It has been
-  message_next: days since the last update, the content of the article may be outdated.
+  message_prev: 本文上次更新距离今天已经过去
+  message_next: 天, 文中内容可能已经过时，望周知。
 
 # --------------------------------------
 # Footer Settings
@@ -256,7 +277,7 @@ noticeOutdate:
 footer:
   owner:
     enable: true
-    since: 2019
+    since: 2020
   custom_text:
   # Copyright of theme and framework
   copyright: true
@@ -272,7 +293,7 @@ aside:
   button: true
   mobile: true
   # Position: left / right
-  position: right
+  position: left
   display:
     archive: true
     tag: true
@@ -282,18 +303,18 @@ aside:
     description:
     button:
       enable: true
-      icon: fab fa-github
-      text: Follow Me
-      link: https://github.com/xxxxxx
+      icon: fas fa-home
+      text: 回到首页
+      link: /
   card_announcement:
-    enable: true
+    enable: false
     content: This is my Blog
   card_recent_post:
     enable: true
     # If set 0 will show all
-    limit: 5
+    limit: 10
     # Sort: date / updated
-    sort: date
+    sort: updated
     sort_order:
   card_newest_comments:
     enable: false
@@ -305,12 +326,13 @@ aside:
   card_categories:
     enable: true
     # If set 0 will show all
-    limit: 8
+    limit: 0
     # Choose: none / true / false
-    expand: none
+    expand: false
+    orderby: pinyin
     sort_order:
   card_tags:
-    enable: true
+    enable: false
     # If set 0 will show all
     limit: 40
     color: false
@@ -320,7 +342,7 @@ aside:
     order: 1
     sort_order:
   card_archives:
-    enable: true
+    enable: false
     # Type: monthly / yearly
     type: monthly
     # Eg: YYYY年MM月
@@ -333,7 +355,7 @@ aside:
   card_post_series:
     enable: true
     # The title shows the series name
-    series_title: false
+    series_title: true
     # Order by title or date
     orderBy: 'date'
     # Sort of order. 1, asc for ascending; -1, desc for descending
@@ -346,7 +368,7 @@ aside:
     # Time difference between publish date and now
     # Formal: Month/Day/Year Time or Year/Month/Day Time
     # Leave it empty if you don't enable this feature
-    runtime_date:
+    runtime_date: 2020/08/21
 
 # --------------------------------------
 # Bottom right button
@@ -383,11 +405,11 @@ darkmode:
   # autoChangeMode: false
   autoChangeMode: false
   # Set the light mode time. The value is between 0 and 24. If not set, the default value is 6 and 18
-  start:
-  end:
+  start: 8
+  end: 22
 
 # Show scroll percent in scroll-to-top button
-rightside_scroll_percent: false
+rightside_scroll_percent: true
 
 # Don't modify the following settings unless you know how they work
 # Choose: readmode,translate,darkmode,hideAside,toc,chat,comment
@@ -405,7 +427,7 @@ rightside_item_order:
 
 anchor:
   # When you scroll, the URL will update according to header id.
-  auto_update: false
+  auto_update: true
   # Click the headline to scroll and update the anchor
   click_to_scroll: false
 
@@ -416,11 +438,11 @@ copy:
   # Add the copyright information after copied content
   copyright:
     enable: false
-    limit_count: 150
+    limit_count: 0
 
 # Need to install the hexo-wordcount plugin
 wordcount:
-  enable: false
+  enable: true
   # Display the word count of the article in post meta
   post_wordcount: true
   # Display the time to read the article in post meta
@@ -444,7 +466,7 @@ busuanzi:
 math:
   # Choose: mathjax, katex
   # Leave it empty if you don't need math
-  use:
+  use: mathjax
   per_page: true
   hide_scrollbar: false
 
@@ -465,7 +487,7 @@ math:
 search:
   # Choose: algolia_search / local_search / docsearch
   # leave it empty if you don't need search
-  use:
+  use: local_search
   placeholder:
 
   # Algolia Search
@@ -476,11 +498,11 @@ search:
   # Local Search
   local_search:
     # Preload the search data when the page loads.
-    preload: false
+    preload: true
     # Show top n results per article, show all results by setting to -1
     top_n_per_article: 1
     # Unescape html strings to the readable one.
-    unescape: false
+    unescape: true
     CDN:
 
   # Docsearch
@@ -602,7 +624,7 @@ facebook_comments:
   pageSize: 10
   # Choose: social / time / reverse_time
   order_by: social
-  lang: en_US
+  lang: zh_TW
 
 # Twikoo
 # https://github.com/imaegoo/twikoo
@@ -645,7 +667,7 @@ artalk:
 # --------------------------------------
 
 chat:
-  # Choose: chatra/tidio/crisp
+  # Choose: chatra/tidio/daovoice/crisp
   # Leave it empty if you don't need chat
   use:
   # Chat Button [recommend]
@@ -661,6 +683,10 @@ chatra:
 # https://www.tidio.com/
 tidio:
   public_key:
+
+# http://dashboard.daovoice.io/app
+daovoice:
+  app_id:
 
 # https://crisp.chat/en/
 crisp:
@@ -752,6 +778,20 @@ site_verification:
 #   scrollbar_color: "#49b1f5"
 #   meta_theme_color_light: "ffffff"
 #   meta_theme_color_dark: "#0d0d0d"
+theme_color:
+  enable: true
+  main: '#E68258' #'#00B300' #'#1A1A1A' #滑动条的颜色,背景以上的颜色
+  paginator: "#e68258" #底部网页分页数字的颜色
+  button_hover: "#FF9966" #鼠标停留在button上颜色渐变的效果；选择了比主题色更浅一号的橙色
+  text_selection: '#9F6506' #'#000066' #"#0000CC" #选中文字后的颜色
+  link_color: "#b86ed0" #网页链接的颜色
+  meta_color: "#858585"
+  hr_color: "#A4D8FA"
+  code_foreground: "#F47466"
+  code_background: "#FFFF00"
+  toc_color: '#E68258' #"#e68258" #"#00c4b6"
+  blockquote_padding_color: "#e68258" #引用部分左边长条边框颜色
+  blockquote_background_color: "#e68258" #引用部分的背景颜色
 
 # The user interface setting of category and tag page
 # Choose: index - same as Homepage UI / default - same as archives UI
@@ -799,15 +839,15 @@ beautify:
 # Global font settings
 # Don't modify the following settings unless you know how they work
 font:
-  global_font_size:
+  global_font_size: 16.5px
   code_font_size:
-  font_family:
+  font_family: Times, Noto Serif SC
   code_font_family:
 
 # Font settings for the site title and site subtitle
 blog_title_font:
   font_link:
-  font_family:
+  font_family: Ma Shan Zheng
 
 # The setting of divider icon
 hr_icon:
@@ -841,8 +881,8 @@ canvas_ribbon:
 
 # Fluttering Ribbon
 canvas_fluttering_ribbon:
-  enable: false
-  mobile: false
+  enable: true
+  mobile: true
 
 # canvas_nest
 # https://github.com/hustcc/canvas-nest.js
@@ -896,7 +936,7 @@ lightbox:
 
 # Series
 series:
-  enable: false
+  enable: true
   # Order by title or date
   orderBy: 'title'
   # Sort of order. 1, asc for ascending; -1, desc for descending
@@ -912,32 +952,13 @@ abcjs:
 # Mermaid
 # https://github.com/mermaid-js/mermaid
 mermaid:
-  enable: false
+  enable: true
   # Write Mermaid diagrams using code blocks
   code_write: false
   # built-in themes: default / forest / dark / neutral
   theme:
     light: default
     dark: dark
-
-# chartjs
-# see https://www.chartjs.org/docs/latest/
-chartjs:
-  enable: false
-  # Do not modify unless you understand how they work.
-  # The default settings are only used when the MD syntax is not specified.
-  # General font color for the chart
-  fontColor:
-    light: 'rgba(0, 0, 0, 0.8)'
-    dark: 'rgba(255, 255, 255, 0.8)'
-  # General border color for the chart
-  borderColor:
-    light: 'rgba(0, 0, 0, 0.1)'
-    dark: 'rgba(255, 255, 255, 0.2)'
-  # Background color for scale labels on radar and polar area charts
-  scale_ticks_backdropColor:
-    light: 'transparent'
-    dark: 'transparent'
 
 # Note - Bootstrap Callout
 note:
@@ -1030,9 +1051,14 @@ css_prefix: true
 # Insert the code to head (before '</head>' tag) and the bottom (before '</body>' tag)
 inject:
   head:
-    # - <link rel="stylesheet" href="/xxx.css">
+    - <link rel="preconnect" href="https://fonts.googleapis.com">
+    - <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    - <link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet"> #思源宋体
+    - <link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng:wght@400;500;700&display=swap" rel="stylesheet"> #Mashanzheng
+    - <link rel="stylesheet" href="/css/wave.css?v1">  
   bottom:
-    # - <script src="xxxx"></script>
+    - <script type='text/javascript' src='https://ajax.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    - <script id="dsq-count-scr" src="//https-www-dhndzwxj-top.disqus.com/count.js" async></script>
 
 # CDN Settings
 # Don't modify the following settings unless you know how they work
@@ -1065,7 +1091,6 @@ CDN:
     # canvas_fluttering_ribbon:
     # canvas_nest:
     # canvas_ribbon:
-    # chartjs:
     # click_heart:
     # clickShowText:
     # disqusjs:
